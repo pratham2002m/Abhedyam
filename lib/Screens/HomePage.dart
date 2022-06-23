@@ -1,113 +1,86 @@
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:abhedyam/Services/storage.dart';
+import 'package:abhedyam/Repeats/MyCard.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:abhedyam/Repeats/AppBar.dart';
 
-class HomePage extends StatelessWidget{
+class HomePage extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() => _HomePage() ;
+}
+class _HomePage extends State<HomePage>{
 
-  FirebaseStorage storage = FirebaseStorage.instance ;
+  int selectedIndex = 0 ;
 
-  List sliderImages = [
-    "assets/sliders/image1.jpg",
-    "assets/sliders/image2.jpg",
-    "assets/sliders/image3.png",
-  ];
-
-
+  void _onTap(int index){
+      setState(() {
+        selectedIndex = index ;
+      });
+  }
 
   @override
   Widget build(BuildContext context) {
       return Scaffold(
         appBar: appbar(context),
-        body: ListView(
-            children: <Widget>[
-              SizedBox(height: 10.0,),
-              FutureBuilder(
-                  future: Storage().listSliders(),
-                  builder: (BuildContext context, AsyncSnapshot<dynamic>snapshot){
-                    if(snapshot.connectionState == ConnectionState.done){
-                      return Container(
-                        height: 200,
-                        child: ListView.builder(
-                          itemCount: snapshot.data!.items.length,
-                            itemBuilder: (BuildContext context,int index){
-                                return FutureBuilder(
-                                  future: Storage().listSliders1(snapshot.data!.items[index].name),
-                                  builder: (BuildContext context, AsyncSnapshot<String>snapshot){
-                                    if(snapshot.connectionState == ConnectionState.done && snapshot.hasData){
-                                      return Container(
-                                          height: 200,
-                                          margin: EdgeInsets.symmetric(horizontal: 50),
-                                          child: Image.network(snapshot.data!,width: MediaQuery.of(context).size.width/2,height: MediaQuery.of(context).size.height ,)
-                                      );
-                                    }
-                                    else if(snapshot.connectionState == ConnectionState.done && !snapshot.hasData ){
-                                      return Container(
-                                          width: MediaQuery.of(context).size.width,
-                                          child: Center(
-                                            child: Row(
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: const <Widget>[
-                                                SizedBox(
-                                                  child: CircularProgressIndicator(),
-                                                  height: 50.0,
-                                                  width: 50.0,
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                      );
-                                    }
-                                    return Container();
-                                  },
-                                );
-                            },
-                          scrollDirection: Axis.horizontal,
-                        )
-                      );
-                    }
-                    else{
-                      return Container(
-                        margin: EdgeInsets.symmetric(horizontal: 20),
-                        height: 200,
-                        child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: <Widget>[
-                                SizedBox(
-                                  child: CircularProgressIndicator(),
-                                  height: 200.0,
-                                  width: MediaQuery.of(context).size.width-40,
-                                ),
-                              ],
-                        ),
-                      );
-                    }
-                  },
+        body: Scaffold(
+          backgroundColor: Color(0xfffff9e0),
+          appBar: AppBar(
+              leadingWidth: 50,
+              backgroundColor: Colors.orangeAccent[100],
+              elevation: 0,
+              title: Column(
+              children: const <Widget>[
+                Text("Ministry Of Electronics And Information",style: TextStyle(fontSize: 15),),
+                Text("Technology",style: TextStyle(fontSize: 15),)
+              ],
+            ),
+          ),
+          drawer: Container(
+            width: MediaQuery.of(context).size.width/1.5,
+            child: Drawer(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: <Widget>[
+                  ListTile(
+                    leading: Icon(Icons.login),
+                    title: Text("Sign In"),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.app_registration_sharp),
+                    title: Text("Register"),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.logout),
+                    title: Text("Sign Out"),
+                  ),
+                ],
               ),
-              SizedBox(height: 10.0,),
-              // CarouselSlider(
-              //   options: CarouselOptions(height: 150.0),
-              //   items: [0,1,2].map((i) {
-              //     return Builder(
-              //       builder: (BuildContext context) {
-              //         return Container(
-              //             width: MediaQuery.of(context).size.width,
-              //             margin: EdgeInsets.symmetric(horizontal: 5.0),
-              //             decoration: BoxDecoration(
-              //               image: DecorationImage(
-              //                 fit: BoxFit.fill,
-              //                 image: AssetImage(sliderImages[i])
-              //               )
-              //             ),
-              //         );
-              //       },
-              //     );
-              //   }).toList(),
-              // ),
+            ),
+          ),
+          body: Container(
+            child: ListView(
+              children: <Widget>[
+                MyCard("AICTE Info", "INfo Regarding Aicte ggggggggggg ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg"),
+                MyCard("USIP Contribution", "INfo Regarding Aicte ggggggggggg ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg"),
+              ],
+            ),
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            selectedItemColor: Colors.black,
+            unselectedItemColor: Colors.grey,
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home_filled),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(icon: Icon(Icons.home),label: 'Search',),
+              BottomNavigationBarItem(icon: Icon(Icons.home),label: 'Search'),
+              BottomNavigationBarItem(icon: Icon(Icons.search),label: 'Search'),
+              BottomNavigationBarItem(icon: Icon(Icons.search),label: 'Search'),
             ],
-        ),
+            currentIndex: selectedIndex,
+            onTap: _onTap,
+          ),
+        )
       );
   }
 }
