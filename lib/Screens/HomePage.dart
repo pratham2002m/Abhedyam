@@ -1,3 +1,5 @@
+import 'package:abhedyam/Repeats/drawer.dart';
+import 'package:abhedyam/Screens/LoginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:abhedyam/Repeats/MyCard.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -34,28 +36,7 @@ class _HomePage extends State<HomePage>{
               ],
             ),
           ),
-          drawer: Container(
-            width: MediaQuery.of(context).size.width/1.5,
-            child: Drawer(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: <Widget>[
-                  ListTile(
-                    leading: Icon(Icons.login),
-                    title: Text("Sign In"),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.app_registration_sharp),
-                    title: Text("Register"),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.logout),
-                    title: Text("Sign Out"),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          drawer: drawer(context),
           body: Container(
             child: ListView(
               children: <Widget>[

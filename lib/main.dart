@@ -1,3 +1,4 @@
+import 'package:abhedyam/Screens/HomePage.dart';
 import 'package:abhedyam/Screens/LoginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               primarySwatch: Colors.blue,
             ),
-            home: LoginPage()
+            home: HomePage()
     );
   }
 }
